@@ -5,7 +5,7 @@ LOG_PATH=$HOME/Obsidian/logs/vault.log
 
 cd $PROJECT_PATH || exit
 
-echo "------ Script run at: $(date) ------ " >> "$LOG_PATH"
+echo "\n------ Script run at: $(date) ------ " >> "$LOG_PATH"
 
 # only push on changes found, but always log when script runs
 if [[ -n $(git status --porcelain) ]]; then
