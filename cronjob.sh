@@ -3,18 +3,37 @@
 PROJECT_PATH=$HOME/Obsidian
 LOG_PATH=$HOME/Obsidian/logs/vault.log
 
-cd $PROJECT_PATH || exit
+cd "$PROJECT_PATH" || exit
 
-echo "\n------ Script run at: $(date) ------ " >> "$LOG_PATH"
+# Adding a well-formatted log entry for the script run
+{
+    echo ""
+    echo "=================================================="
+    echo "Script run at: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo "=================================================="
+} >> "$LOG_PATH"
 
-# only push on changes found, but always log when script runs
+# Only push on changes found, but always log when the script runs
 if [[ -n $(git status --porcelain) ]]; then
     git add .
-    COMMIT_MESSAGE="Auto-commit: $(date)"
+    COMMIT_MESSAGE="Auto-commit: $(date '+%Y-%m-%d %H:%M:%S')"
     git commit -m "$COMMIT_MESSAGE"
-    echo ": $COMMIT_MESSAGE" >> "$LOG_PATH"
-    git diff HEAD~1 HEAD >> "$LOG_PATH"
+    
+    # Logging the commit message and changes in a structured format
+    {
+        echo "Changes found and committed."
+        echo "Commit message: $COMMIT_MESSAGE"
+        echo "Files changed:"
+        git diff --name-only HEAD~1 HEAD
+        echo "Diff:"
+        git diff HEAD~1 HEAD
+        echo "Pushing changes to remote..."
+    } >> "$LOG_PATH"
+
     git push origin main
+    echo "Push completed at: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_PATH"
 else
-    echo "No changes found" >> "$LOG_PATH"
+    # Log entry for no changes found
+    echo "No changes found at: $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_PATH"
 fi
+
