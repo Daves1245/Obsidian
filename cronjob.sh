@@ -12,9 +12,9 @@ if [[ -n $(git status --porcelain) ]]; then
     git add .
     COMMIT_MESSAGE="Auto-commit: $(date)"
     git commit -m "$COMMIT_MESSAGE"
-    echo ": $COMMIT_MESSAGE" >> "$LOGFILE"
-    git diff HEAD~1 HEAD >> "$LOGFILE"
+    echo ": $COMMIT_MESSAGE" >> "$LOG_PATH"
+    git diff HEAD~1 HEAD >> "$LOG_PATH"
     git push origin main
 else
-    echo "No changes found" >> "$LOGFILE"
+    echo "No changes found" >> "$LOG_PATH"
 fi
